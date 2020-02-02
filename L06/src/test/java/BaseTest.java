@@ -23,7 +23,7 @@ public class BaseTest {
     public void setupTest() {
         System.setProperty("webdriver.chrome.driver", "src/test/resources/chromedriver.exe");
         driver = new ChromeDriver();
-        webDriverWait = new WebDriverWait(driver, 30);
+        webDriverWait = new WebDriverWait(driver, 10);
         logger.info("Setup is completed.");
     }
 
