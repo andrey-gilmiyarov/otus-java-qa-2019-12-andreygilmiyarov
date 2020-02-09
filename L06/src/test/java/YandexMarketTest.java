@@ -2,8 +2,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -13,10 +13,10 @@ import java.util.concurrent.TimeUnit;
 
 public class YandexMarketTest extends BaseTest {
 
-    private static final Logger logger = LogManager.getLogger(YandexMarketTest.class);
+    private static final Logger logger = LogManager.getLogger(YandexMarketTestSlack.class);
 
     @Test
-    public void test() throws InterruptedException {
+    public void test() {
 
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
@@ -82,11 +82,10 @@ public class YandexMarketTest extends BaseTest {
         logger.info("Во вкладке \"различающиеся характеристики\" поле \"ОПЕРАЦИОННАЯ СИСТЕМА\" отсутствует");
 
         logger.info("Тест пройден");
-//        Thread.sleep(1000);
 
     }
 
-    private void filterByBrand(BrandForComparison brandForComparison) throws InterruptedException {
+    private void filterByBrand(BrandForComparison brandForComparison) {
         String fieldSetBrandNames = "fieldset[data-autotest-id='7893318']";
         webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(fieldSetBrandNames)));
         List<WebElement> brandNames = driver.findElements(By.cssSelector(fieldSetBrandNames + " > ul > li > div > a > label"));
@@ -97,24 +96,14 @@ public class YandexMarketTest extends BaseTest {
             }
         }
         logger.info("Применили фильтрацию по бренду " + brandForComparison.toString());
-        Thread.sleep(3000);
     }
 
-    private void addToComparison(BrandForComparison brandForComparison) throws InterruptedException {
+    private void addToComparison(BrandForComparison brandForComparison) {
         if (!brandForComparison.isCompareToThisBrand()) {
             filterByBrand(brandForComparison);
-//            boolean isCompare = false;
-//            while (!isCompare) {
-//                try {
-//                    driver.findElement(By.cssSelector(":nth-child(1) > .n-snippet-cell2__hover > div > div > div")).click();
-//                    isCompare = true;
-//                } catch (StaleElementReferenceException ex) {
-//                    logger.info("Кнопка \"Добавить к сравнению\" пока не появилась на странице");
-//                }
-//            }
-//            webDriverWait.until(ExpectedConditions.elementToBeClickable(By.className(":nth-child(1) > .n-snippet-cell2__hover > div > div > div")));
-//            webDriverWait.until(ExpectedConditions.elementToBeClickable(By.className(":nth-child(1) > .n-snippet-cell2__header > .n-snippet-cell2__title > a")));
-            driver.findElement(By.cssSelector(":nth-child(1) > .n-snippet-cell2__hover > div > div > div")).click();
+            webDriverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".preloadable__preloader_visibility_visible")));
+            WebElement addToCompareButton = driver.findElement(By.cssSelector(":nth-child(1) > .n-snippet-cell2__hover > div > div > div"));
+            new Actions(driver).moveToElement(addToCompareButton).click().perform();
             webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(By.className("popup-informer__title")));
             String popupTitle = driver.findElement(By.className("popup-informer__title")).getText();
             Assert.assertTrue(popupTitle.toUpperCase().contains(brandForComparison.toString()));
