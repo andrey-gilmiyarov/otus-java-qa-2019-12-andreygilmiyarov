@@ -108,6 +108,7 @@ public class YandexMarketTest extends BaseTest {
             String popupTitle = driver.findElement(By.className("popup-informer__title")).getText();
             Assert.assertTrue(popupTitle.toUpperCase().contains(brandForComparison.toString()));
             brandForComparison.setCompareToThisBrand(true);
+            webDriverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".preloadable__preloader_visibility_visible")));
             driver.findElement(By.cssSelector(".popup-informer__close.image.image_name_close")).click();
             logger.info("Смартфон бренда " + brandForComparison.toString() + " добавлен в сравнение");
         }
