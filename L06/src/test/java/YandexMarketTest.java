@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 public class YandexMarketTest extends BaseTest {
 
-    private static final Logger logger = LogManager.getLogger(YandexMarketTestSlack.class);
+    private static final Logger logger = LogManager.getLogger(YandexMarketTest.class);
 
     @Test
     public void test() {
