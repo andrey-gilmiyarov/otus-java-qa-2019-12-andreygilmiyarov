@@ -18,11 +18,12 @@ public class PesronalInfoPage extends AbstractPage {
     private By blogName = By.id("id_blog_name");
     private By datepicker = By.cssSelector("input[data-toggle='datepicker']");
 
-//    private By addContact = By.linkText("Добавить");
-//    private By contact2 = By.cssSelector("contact-2-service");
-//    private By contact3 = By.cssSelector("contact-3-service");
-
-    //    private By contact = By.cssSelector("label > div.lk-cv-block__input");
+    private By countries = By.cssSelector("div[data-ajax-slave='/lk/biography/cv/lookup/cities/by_country/'] > label > div");
+    private By chosenCountry = By.cssSelector("button[title='Россия']");
+    private By countryName = By.cssSelector("div[data-ajax-slave='/lk/biography/cv/lookup/cities/by_country/'] > label > div");
+    private By cities = By.cssSelector(".js-lk-cv-dependent-slave-city > label > div");
+    private By chosenCity = By.cssSelector("button[title='Москва']");
+    private By cityName = By.cssSelector(".js-lk-cv-dependent-slave-city > label > div");
 
     private By save = By.cssSelector("button[name='continue']");
 
@@ -54,11 +55,14 @@ public class PesronalInfoPage extends AbstractPage {
         return this;
     }
 
-//    public void addContactInfo() {
-//        JavascriptExecutor jse = (JavascriptExecutor)driver;
-//        jse.executeScript("document.getElementsByName(" + contact2 + ")[0].setAttribute('type', 'visible');");
-//        driver.findElement(contact2).sendKeys();
-//    }
+    public PesronalInfoPage addLocationInfo() {
+        driver.findElement(countries).click();
+        driver.findElement(chosenCountry).click();
+        driver.findElement(cities).click();
+        driver.findElement(chosenCity).click();
+        logger.info("Add location info.");
+        return this;
+    }
 
     public void saveInfo() {
         driver.findElement(save).click();
@@ -79,5 +83,13 @@ public class PesronalInfoPage extends AbstractPage {
 
     public String getBirthDate() {
         return driver.findElement(datepicker).getAttribute("value");
+    }
+
+    public String getExpectedCountry() {
+        return driver.findElement(countryName).getText();
+    }
+
+    public String getExpectedCity() {
+        return driver.findElement(cityName).getText();
     }
 }

@@ -17,6 +17,8 @@ public class OtusTest extends BaseTest {
     private String name = "Name";
     private String lname = "LastName";
     private String birthDate = "16.02.2020";
+    private String country = "Россия";
+    private String city = "Москва";
 
     @Parameters({"username", "password"})
     @Test
@@ -28,6 +30,7 @@ public class OtusTest extends BaseTest {
         otusMainPage.open().clickLoginButton().login(username, password);
         otusMainPage.goToPersonalInfo()
                 .getPersonalInfo()
+                .addLocationInfo()
                 .addPersonalInfo(name, lname, name, birthDate)
                 .saveInfo();
         otusMainPage.logOut();
@@ -40,12 +43,11 @@ public class OtusTest extends BaseTest {
         Assert.assertEquals(pesronalInfoPage.getLname(), lname, "Last name is not equals!");
         Assert.assertEquals(pesronalInfoPage.getBlogName(), name, "Blog name is not equals!");
         Assert.assertEquals(pesronalInfoPage.getBirthDate(), birthDate, "Birth date is not equals!");
+        Assert.assertEquals(pesronalInfoPage.getExpectedCountry(), country, "Country is not equals!");
+        Assert.assertEquals(pesronalInfoPage.getExpectedCity(), city, "City is not equals!");
 
         logger.info("Test completed.");
 
-        Thread.sleep(3000);
     }
-
-
 
 }
